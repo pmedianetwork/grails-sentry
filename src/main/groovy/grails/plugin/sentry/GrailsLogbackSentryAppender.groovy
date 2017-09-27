@@ -50,9 +50,7 @@ class GrailsLogbackSentryAppender extends SentryAppender {
             return
         }
 
-        if (config.levels && config.levels.contains(event.level)) {
-            super.append(event)
-        } else if (SentryConfig.defaultLevels.contains(event.level)) {
+        if ((config.levels ?: SentryConfig.defaultLevels).contains(event.level)) {
             super.append(event)
         }
     }
