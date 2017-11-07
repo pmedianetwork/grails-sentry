@@ -55,6 +55,7 @@ class SpringSecurityUserEventBuilderHelper implements EventBuilderHelper {
                 String idPropertyName = 'id'
                 String emailPropertyName = null
                 String usernamePropertyName = 'username'
+                List data = null
 
                 if (sentryConfig?.springSecurityUserProperties &&
                         sentryConfig?.springSecurityUserProperties instanceof Map) {
@@ -70,13 +71,21 @@ class SpringSecurityUserEventBuilderHelper implements EventBuilderHelper {
                             sentryConfig.springSecurityUserProperties.username instanceof String) {
                         usernamePropertyName = sentryConfig.springSecurityUserProperties.username
                     }
+                    if (sentryConfig.springSecurityUserProperties.data &&
+                            sentryConfig.springSecurityUserProperties.data instanceof List) {
+                        data = sentryConfig.springSecurityUserProperties.data
+                    }
                 }
 
                 def id = principal[idPropertyName].toString()
                 String username = principal[usernamePropertyName].toString()
                 String ipAddress = getIpAddress(sentryServletRequestListener?.getServletRequest())
                 String email = emailPropertyName ? principal[emailPropertyName].toString() : null
-                UserInterface userInterface = new UserInterface(id, username, ipAddress, email)
+                Map<String, Object> extraData = [:]
+                data.each { String key ->
+                    extraData[key] = principal[key].toString()
+                }
+                UserInterface userInterface = new UserInterface(id, username, ipAddress, email, extraData)
                 eventBuilder.withSentryInterface(userInterface, true)
             }
         }

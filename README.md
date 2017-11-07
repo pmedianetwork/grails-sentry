@@ -80,6 +80,8 @@ grails:
                 id: 'id'
                 email: 'emailAddress'
                 username: 'login'
+                data: # Additional properties to be retrieved from user details object and passed as extra properties to Sentry user interface.
+                    - 'authorities'
             priorities: 
                 HIGH: [java.lang, com.microsoft.sqlserver.jdbc.SQLServerException]
                 MID: [com.company.exception]
