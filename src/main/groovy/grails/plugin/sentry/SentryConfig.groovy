@@ -89,7 +89,8 @@ class SentryConfig {
             springSecurityUserProperties = new SpringSecurityUserProperties(
                     id: (config.springSecurityUserProperties as Map).id?.toString() ?: null,
                     email: (config.springSecurityUserProperties as Map).email?.toString() ?: null,
-                    username: (config.springSecurityUserProperties as Map).username?.toString() ?: null
+                    username: (config.springSecurityUserProperties as Map).username?.toString() ?: null,
+                    data: (config.springSecurityUserProperties as Map).data as List ?: null
             )
         }
     }
@@ -115,6 +116,7 @@ class SentryConfig {
         String id
         String email
         String username
+        List data
     }
 
 }
