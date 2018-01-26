@@ -92,7 +92,7 @@ class SpringSecurityUserEventBuilderHelper implements EventBuilderHelper {
     }
 
     String getIpAddress(HttpServletRequest request) {
-        String unknown = 'unknown'
+        String unknown = '127.0.0.1'
         String ipAddress = unknown
 
         if (request) {
