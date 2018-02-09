@@ -19,7 +19,7 @@ Declare the plugin dependency in the _build.gradle_ file, as shown here:
 ```groovy
 dependencies {
     ...
-    compile("org.grails.plugins:sentry:11.4.0.2")
+    compile("org.grails.plugins:sentry:11.6.5")
     ...
 }
 ```
@@ -130,8 +130,10 @@ sentryClient?.sendEvent(eventBuilder.build())
 
 # Latest releases
 
+* 2018-02-09 **V11.6.5** : upgrade Sentry java lib to 1.6.5 + bug fixes
+* 2017-11-09 **V11.4.0.3** : fixes
 * 2017-08-03 **V11.4.0.2** : fixes
-  2017-08-03 **V11.4.0** : upgrade Sentry java lib to 1.4.0 + bug fix, thanks to [donbeave](https://github.com/donbeave) PR #37
+* 2017-08-03 **V11.4.0** : upgrade Sentry java lib to 1.4.0 + bug fix, thanks to [donbeave](https://github.com/donbeave) PR #37
 * 2017-07-17 **V11.3.0** : upgrade Sentry java lib to 1.3.0 + bug fix, thanks to [donbeave](https://github.com/donbeave) PR #34
 * 2017-07-04 **V11.2.0** : upgrade Sentry java lib to 1.2.0 (which replaces the deprecated Raven java lib)
 * 2017-06-06 **V8.0.3** : upgrade Raven java lib to 8.0.3
