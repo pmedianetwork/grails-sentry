@@ -35,7 +35,7 @@ grails:
             dsn: https://{PUBLIC_KEY}:{SECRET_KEY}@app.getsentry.com/{PATH}{PROJECT_ID}
 ```
 
-The DSN can be found in project's _Settings_ under _Client Keys (DSN)_ section. You need to expand the DSN detail to see _DSN (Legacy)_ value which contains the `SECRET_KEY` as well.
+The DSN can be found in project's _Settings_ under _Client Keys (DSN)_ section.
 
 The plugin will sent notifications to Sentry by default, if you want to disable notifications for an specific environment set the `active` option as false.
 
