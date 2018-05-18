@@ -37,7 +37,7 @@ class SentryConfig {
 
     static List<Level> defaultLevels = [Level.ERROR, Level.WARN]
 
-    SentryConfig(Map config) {
+    SentryConfig(Map config = [:]) {
         if (config.dsn) {
             dsn = config.dsn?.toString()
             active = true
