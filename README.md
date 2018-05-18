@@ -10,7 +10,7 @@ Sentry Grails Plugin
 Sentry plugin provides a Grails client for integrating apps with [Sentry](http://www.getsentry.com). 
 [Sentry](http://www.getsentry.com) is an event logging platform primarily focused on capturing and aggregating exceptions.
 
-It uses the official [Raven-java](https://github.com/getsentry/raven-java) client under the cover.
+It uses the official [Sentry.io](https://github.com/getsentry/sentry-java) client under the cover.
 
 # Installation
 
@@ -34,6 +34,8 @@ grails:
         sentry:
             dsn: https://{PUBLIC_KEY}:{SECRET_KEY}@app.getsentry.com/{PATH}{PROJECT_ID}
 ```
+
+The DSN can be found in project's _Settings_ under _Client Keys (DSN)_ section. You need to expand the DSN detail to see _DSN (Legacy)_ value which contains the `SECRET_KEY` as well.
 
 The plugin will sent notifications to Sentry by default, if you want to disable notifications for an specific environment set the `active` option as false.
 
