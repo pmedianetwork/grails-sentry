@@ -43,7 +43,7 @@ class SentryConfig {
             active = true
         }
 
-        if (config.containsKey('active') && config.active == false) {
+        if (config.containsKey('active') && config.active as String == 'false') {
             active = false
         }
 
@@ -72,16 +72,16 @@ class SentryConfig {
             tags = config.tags as Map<String, String>
         }
 
-        if (config.logClassName == true) {
+        if (config.logClassName as String == 'true') {
             logClassName = true
         }
-        if (config.logHttpRequest == true) {
+        if (config.logHttpRequest as String == 'true') {
             logHttpRequest = true
         }
-        if (config.disableMDCInsertingServletFilter == true) {
+        if (config.disableMDCInsertingServletFilter as String == 'true') {
             disableMDCInsertingServletFilter = true
         }
-        if (config.springSecurityUser == true) {
+        if (config.springSecurityUser as String == 'true') {
             springSecurityUser = true
         }
 
