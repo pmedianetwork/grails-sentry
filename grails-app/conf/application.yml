@@ -30,3 +30,13 @@ spring:
     groovy:
         template:
             check-template-location: false
+
+---
+environments:
+    test:
+        grails:
+            plugin:
+                sentry:
+                    active: true
+                    dsn: 'https://foo:bar@example.com/123'
+                    logHttpRequest: true
