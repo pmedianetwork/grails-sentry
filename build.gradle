@@ -28,7 +28,7 @@ plugins {
     id 'com.jfrog.artifactory' version '4.7.5'
 }
 
-version "1${sentryLogbackVersion}.2"
+version "1${sentryLogbackVersion}"
 group 'org.grails.plugins'
 
 apply plugin: 'eclipse'
