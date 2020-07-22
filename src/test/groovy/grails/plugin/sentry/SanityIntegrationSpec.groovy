@@ -17,6 +17,7 @@ class SanityIntegrationSpec extends Specification {
     GrailsLogbackSentryAppender sentryAppender
     SentryClient sentryClient
     SentryClientFactory sentryFactory
+    SentryClientFactoryProvider sentryClientFactoryProvider
     SentryServletRequestListener sentryServletRequestListener
 
     @ConfineMetaClassChanges(GrailsLogbackSentryAppender)
@@ -25,6 +26,7 @@ class SanityIntegrationSpec extends Specification {
             sentryAppender
             sentryClient
             sentryFactory
+            sentryClientFactoryProvider
             sentryServletRequestListener
         when: "mock http server is started"
             ErsatzServer server = new ErsatzServer().expectations {
