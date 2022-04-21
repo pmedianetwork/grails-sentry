@@ -27,10 +27,13 @@ import groovy.util.logging.Slf4j
 import io.sentry.EventProcessor
 import io.sentry.Sentry
 import io.sentry.SentryOptions
+import io.sentry.jdbc.SentryJdbcEventListener
 import io.sentry.logback.SentryAppender
 import io.sentry.servlet.SentryServletRequestListener
+import io.sentry.spring.tracing.SentryTracingFilter
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.core.Ordered
 
 @CompileStatic(TypeCheckingMode.SKIP)
 @Slf4j
@@ -84,6 +87,19 @@ class SentryGrailsPlugin extends Plugin {
                     }
                 }
 
+                if (pluginConfig.tracesSampleRate > 0) {
+                    sentryTracingFilter(SentryTracingFilter)
+                    sentryTracingFilterRegistration(FilterRegistrationBean) {
+                        filter = sentryTracingFilter
+                        urlPatterns = ['/*']
+                        order = Ordered.HIGHEST_PRECEDENCE + 1
+                    }
+                    if (pluginConfig.traceJDBC) {
+                        sentryDataSourceWrapper(SentryDataSourceWrapper)
+                        sentryJdbcEventListener(SentryJdbcEventListener)
+                    }
+                }
+
                 if (!pluginConfig.disableMDCInsertingServletFilter) {
                     log.info 'Activating MDCInsertingServletFilter'
                     mdcInsertingServletFilter(FilterRegistrationBean) {
@@ -122,6 +138,7 @@ class SentryGrailsPlugin extends Plugin {
         SentryOptions options = new SentryOptions()
         options.enableExternalConfiguration = true
         options.dsn = pluginConfig.dsn
+        options.tracesSampleRate = pluginConfig.tracesSampleRate
         options.inAppIncludes.addAll pluginConfig.inAppIncludes
         options.environment = pluginConfig.environment ?: Environment.current.name
         options.serverName = pluginConfig.serverName

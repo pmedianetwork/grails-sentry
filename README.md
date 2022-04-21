@@ -74,6 +74,9 @@ grails:
             inAppIncludes:
               - my.app.package.one
               - my.app.package.two
+            tracesSampleRate: 0.5
+            traceJDBC: true
+            linkPrefix: https://sentry.example.com/organizations/company
             springSecurityUser: true
             springSecurityUserProperties:
                 id: 'id'
@@ -121,6 +124,19 @@ SentryEvent event = new SentryEvent(
 
 Sentry.currentHub.captureEvent(event)
 ```
+
+## Performance monitoring
+
+Sentry [performance monitoring](https://docs.sentry.io/platforms/java/performance/) is disabled by default.
+You have to set config `tracesSampleRate` to value greater than `0` to enable it.
+[Sample rate](https://docs.sentry.io/platforms/java/configuration/sampling/#sampling-transaction-events) represents percentage of requests that should be traced (value `1` = 100%).
+Requests handled by controllers are then automatically traced in Sentry according to sample rate. 
+You can also enable [JDBC tracing](https://docs.sentry.io/platforms/java/performance/instrumentation/jdbc/) by setting config `traceJDBC` to `true`.
+
+To enable [distributed tracing](https://docs.sentry.io/product/sentry-basics/tracing/distributed-tracing/) you need to [connect services](https://docs.sentry.io/platforms/java/performance/connect-services/) (frontend) 
+by adding `<sentry:traceMeta />` to `<head>` of your gsp view. 
+
+If you configure `linkPrefix` you can also add `<sentry:traceLink />` to your gsp view which displays direct link to transaction in sentry application.
 
 # Latest releases
 

@@ -27,6 +27,9 @@ import groovy.transform.TypeCheckingMode
         inAppIncludes:
           - my.app.package.one
           - my.app.package.two
+        tracesSampleRate: 0.5
+        traceJDBC: true
+        linkPrefix: https://sentry.example.com/organizations/company
         springSecurityUserProperties:
             id: 'id'
             email: 'emailAddress'
@@ -99,6 +102,16 @@ class SentryConfig {
             }
         }
 
+        if (config.tracesSampleRate?.toString()?.isDouble()) {
+            tracesSampleRate = config.tracesSampleRate as Double
+        }
+
+        if (config.traceJDBC as String == 'true') {
+            traceJDBC = true
+        }
+
+        linkPrefix = config.linkPrefix as String
+
         if (config.springSecurityUserProperties && config.springSecurityUserProperties instanceof Map) {
             springSecurityUserProperties = new SpringSecurityUserProperties(
                     id: (config.springSecurityUserProperties as Map).id as String ?: null,
@@ -121,6 +134,9 @@ class SentryConfig {
     boolean springSecurityUser = false
     boolean sanitizeStackTrace = false
     List<String> inAppIncludes = []
+    double tracesSampleRate = 0.0
+    boolean traceJDBC = false
+    String linkPrefix
 
     // TODO
     // priorities
