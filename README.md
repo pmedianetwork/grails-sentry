@@ -74,7 +74,6 @@ grails:
                 MODULE1: [com.company.services.module1, com.company.controllers.module1]
                 MODULE2: [com.company.services.module2, com.company.controllers.module2]
                 MODULE3: [com.company.services.module3, com.company.controllers.module3]
-            logClassName: true
             logHttpRequest: true
             disableMDCInsertingServletFilter: true
             springSecurityUser: true

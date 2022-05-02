@@ -18,7 +18,6 @@ import groovy.transform.CompileStatic
             MODULE1: [com.company.services.module1, com.company.controllers.module1]
             MODULE2: [com.company.services.module2, com.company.controllers.module2]
             MODULE3: [com.company.services.module3, com.company.controllers.module3]
-        logClassName: true
         logHttpRequest: true
         disableMDCInsertingServletFilter: true
         springSecurityUser: true
@@ -79,9 +78,6 @@ class SentryConfig {
             tags = config.tags as Map<String, String>
         }
 
-        if (config.logClassName as String == 'true') {
-            logClassName = true
-        }
         if (config.logHttpRequest as String == 'true') {
             logHttpRequest = true
         }
@@ -112,7 +108,6 @@ class SentryConfig {
     String serverName
     List<Level> levels = defaultLevels
     Map<String, String> tags = [:]
-    boolean logClassName = false
     boolean logHttpRequest = false
     boolean disableMDCInsertingServletFilter = false
     boolean springSecurityUser = false
