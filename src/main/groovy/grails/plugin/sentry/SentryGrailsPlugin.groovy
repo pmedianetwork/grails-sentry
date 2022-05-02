@@ -122,6 +122,7 @@ class SentryGrailsPlugin extends Plugin {
         SentryOptions options = new SentryOptions()
         options.enableExternalConfiguration = true
         options.dsn = pluginConfig.dsn
+        options.inAppIncludes.addAll pluginConfig.inAppIncludes
         options.environment = pluginConfig.environment ?: Environment.current.name
         options.serverName = pluginConfig.serverName
 

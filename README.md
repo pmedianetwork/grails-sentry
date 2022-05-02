@@ -71,6 +71,9 @@ grails:
             tags: {tag1: val1,  tag2: val2, tag3: val3}
             logHttpRequest: true
             disableMDCInsertingServletFilter: true
+            inAppIncludes:
+              - my.app.package.one
+              - my.app.package.two
             springSecurityUser: true
             springSecurityUserProperties:
                 id: 'id'

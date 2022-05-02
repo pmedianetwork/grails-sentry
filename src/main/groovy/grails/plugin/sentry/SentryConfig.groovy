@@ -24,6 +24,9 @@ import groovy.transform.TypeCheckingMode
         disableMDCInsertingServletFilter: true
         springSecurityUser: true
         sanitizeStackTrace: true
+        inAppIncludes:
+          - my.app.package.one
+          - my.app.package.two
         springSecurityUserProperties:
             id: 'id'
             email: 'emailAddress'
@@ -87,6 +90,15 @@ class SentryConfig {
             sanitizeStackTrace = true
         }
 
+        if (config.inAppIncludes) {
+            if (config.inAppIncludes instanceof List) {
+                inAppIncludes = config.inAppIncludes as List
+            }
+            if (config.inAppIncludes instanceof String) {
+                inAppIncludes = (config.inAppIncludes as String).split(",") as List
+            }
+        }
+
         if (config.springSecurityUserProperties && config.springSecurityUserProperties instanceof Map) {
             springSecurityUserProperties = new SpringSecurityUserProperties(
                     id: (config.springSecurityUserProperties as Map).id as String ?: null,
@@ -108,6 +120,8 @@ class SentryConfig {
     boolean disableMDCInsertingServletFilter = false
     boolean springSecurityUser = false
     boolean sanitizeStackTrace = false
+    List<String> inAppIncludes = []
+
     // TODO
     // priorities
     // subsystems
