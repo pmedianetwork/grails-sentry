@@ -14,7 +14,7 @@ import groovy.transform.TypeCheckingMode
         loggers: [LOGGER1, LOGGER2, LOGGER3]
         environment: staging
         serverName: dev.server.com
-        levels: [ERROR]
+        minLevel: ERROR
         tags: {tag1: val1,  tag2: val2, tag3: val3}
         subsystems:
             MODULE1: [com.company.services.module1, com.company.controllers.module1]
@@ -37,8 +37,6 @@ import groovy.transform.TypeCheckingMode
 @CompileStatic(TypeCheckingMode.SKIP)
 @ToString
 class SentryConfig {
-
-    static List<Level> defaultLevels = [Level.ERROR, Level.WARN]
 
     SentryConfig(Map config = [:]) {
         if (!config) {
@@ -68,13 +66,8 @@ class SentryConfig {
         environment = config.environment ?: environment
         serverName = config.serverName ?: serverName
 
-        if (config.levels) {
-            if (config.levels instanceof List) {
-                levels = (config.levels as List).collect { Level.toLevel(it.toString().toUpperCase()) }
-            }
-            if (config.levels instanceof String) {
-                levels = (config.levels as String).split(",").collect { Level.toLevel(it.toString().toUpperCase()) }
-            }
+        if (config.minLevel) {
+            minLevel = Level.toLevel(config.minLevel.toString().toUpperCase())
         }
 
         if (config.tags && config.tags instanceof Map) {
@@ -109,7 +102,7 @@ class SentryConfig {
     List<String> loggers = []
     String environment
     String serverName
-    List<Level> levels = defaultLevels
+    Level minLevel = Level.WARN
     Map<String, String> tags = [:]
     boolean logHttpRequest = false
     boolean disableMDCInsertingServletFilter = false

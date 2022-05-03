@@ -112,6 +112,9 @@ class SentryGrailsPlugin extends Plugin {
             } else {
                 loggerContext.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(appender)
             }
+            if (pluginConfig.minLevel) {
+                appender.minimumEventLevel = pluginConfig.minLevel
+            }
             appender.setContext(loggerContext)
             appender.start()
         }

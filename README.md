@@ -67,7 +67,7 @@ grails:
             loggers: [LOGGER1, LOGGER2, LOGGER3]
             environment: staging
             serverName: dev.server.com
-            levels: [ERROR]
+            minLevel: ERROR
             tags: {tag1: val1,  tag2: val2, tag3: val3}
             logHttpRequest: true
             disableMDCInsertingServletFilter: true
@@ -90,7 +90,7 @@ Check [Sentry-java](https://github.com/getsentry/sentry-java) documentation to c
 The Logback Appender is automatically configured by the plugin, you just have to set enabled environments as shown in Configuration section.
 
 All application exceptions will be logged on sentry by the appender.
-The appender is configured to log just the `ERROR` and `WARN` levels.
+The appender is configured to log just the `WARN` level and up.
 To log manually just use the `log.error()` method.
 
 ## Capturing events manually
