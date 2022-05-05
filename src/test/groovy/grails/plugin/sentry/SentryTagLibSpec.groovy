@@ -15,6 +15,13 @@ class SentryTagLibSpec extends Specification implements TagLibUnitTest<SentryTag
         Sentry.close()
     }
 
+    private void enableSentryTracing() {
+        SentryOptions options = new SentryOptions()
+        options.dsn = "http://key@localhost/42"
+        options.tracesSampleRate = 1.0
+        Sentry.init(options)
+    }
+
     void "traceMeta (sentry disabled)"() {
         expect:
         !Sentry.enabled
@@ -23,10 +30,7 @@ class SentryTagLibSpec extends Specification implements TagLibUnitTest<SentryTag
 
     void "traceMeta (sentry enabled without transaction)"() {
         given:
-        SentryOptions options = new SentryOptions()
-        options.dsn = "http://key@localhost/42"
-        options.tracesSampleRate = 1.0
-        Sentry.init(options)
+        enableSentryTracing()
         String sentryTrace = Sentry.currentHub.span?.toSentryTrace()?.value
 
         expect:
@@ -37,10 +41,7 @@ class SentryTagLibSpec extends Specification implements TagLibUnitTest<SentryTag
 
     void "traceMeta (sentry enabled with transaction)"() {
         given:
-        SentryOptions options = new SentryOptions()
-        options.dsn = "http://key@localhost/42"
-        options.tracesSampleRate = 1.0
-        Sentry.init(options)
+        enableSentryTracing()
         Sentry.startTransaction('name', 'operation', true)
         String sentryTrace = Sentry.currentHub.span?.toSentryTrace()?.value
 
@@ -58,10 +59,7 @@ class SentryTagLibSpec extends Specification implements TagLibUnitTest<SentryTag
 
     void "traceLink (sentry enabled without linkPrefix)"() {
         given:
-        SentryOptions options = new SentryOptions()
-        options.dsn = "http://key@localhost/42"
-        options.tracesSampleRate = 1.0
-        Sentry.init(options)
+        enableSentryTracing()
         Sentry.startTransaction('name', 'operation', true)
         String sentryTraceId = Sentry.currentHub.span?.toSentryTrace()?.traceId
 
@@ -74,11 +72,7 @@ class SentryTagLibSpec extends Specification implements TagLibUnitTest<SentryTag
     void "traceLink (sentry enabled with linkPrefix)"() {
         given:
         tagLib.sentryPluginConfig.getLinkPrefix() >> 'http://prefix'
-
-        SentryOptions options = new SentryOptions()
-        options.dsn = "http://key@localhost/42"
-        options.tracesSampleRate = 1.0
-        Sentry.init(options)
+        enableSentryTracing()
         Sentry.startTransaction('name', 'operation', true)
         String sentryTraceId = Sentry.currentHub.span?.toSentryTrace()?.traceId
 
@@ -95,11 +89,7 @@ class SentryTagLibSpec extends Specification implements TagLibUnitTest<SentryTag
     void "traceLink (sentry enabled with linkPrefix and body)"() {
         given:
         tagLib.sentryPluginConfig.getLinkPrefix() >> 'http://prefix'
-
-        SentryOptions options = new SentryOptions()
-        options.dsn = "http://key@localhost/42"
-        options.tracesSampleRate = 1.0
-        Sentry.init(options)
+        enableSentryTracing()
         Sentry.startTransaction('name', 'operation', true)
         String sentryTraceId = Sentry.currentHub.span?.toSentryTrace()?.traceId
 
