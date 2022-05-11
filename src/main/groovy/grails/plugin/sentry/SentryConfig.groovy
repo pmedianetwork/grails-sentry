@@ -1,9 +1,7 @@
 package grails.plugin.sentry
 
 import ch.qos.logback.classic.Level
-import groovy.transform.CompileStatic
 import groovy.transform.ToString
-import groovy.transform.TypeCheckingMode
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -40,7 +38,6 @@ import groovy.transform.TypeCheckingMode
             LOW: [java.io]
  */
 
-@CompileStatic(TypeCheckingMode.SKIP)
 @ToString
 class SentryConfig {
 
