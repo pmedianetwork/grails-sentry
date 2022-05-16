@@ -19,7 +19,7 @@ Declare the plugin dependency in the _build.gradle_ file, as shown here:
 ```groovy
 dependencies {
     ...
-    compile("com.github.pmedianetwork:grails-sentry:1.0.0-SNAPSHOT")
+    compile("com.github.pmedianetwork:grails-sentry:1.0.0")
     ...
 }
 ```
@@ -137,6 +137,9 @@ To enable [distributed tracing](https://docs.sentry.io/product/sentry-basics/tra
 by adding `<sentry:traceMeta />` to `<head>` of your gsp view. 
 
 If you configure `linkPrefix` you can also add `<sentry:traceLink />` to your gsp view which displays direct link to transaction in sentry application.
+
+# Latest releases
+* 2022-05-16 **1.0.0**: upgrade Sentry java lib to 5.7.0 + performance monitoring
 
 # Historical releases ("org.grails.plugins:sentry")
 
