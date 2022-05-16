@@ -28,8 +28,8 @@ plugins {
     id 'com.jfrog.artifactory' version '4.7.5'
 }
 
-version "1${sentryLogbackVersion}"
-group 'org.grails.plugins'
+version "${version}"
+group 'com.github.pmedianetwork'
 
 apply plugin: 'eclipse'
 apply plugin: 'idea'

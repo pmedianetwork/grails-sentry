@@ -19,7 +19,7 @@ Declare the plugin dependency in the _build.gradle_ file, as shown here:
 ```groovy
 dependencies {
     ...
-    compile("org.grails.plugins:sentry:11.7.25")
+    compile("com.github.pmedianetwork:grails-sentry:1.0.0-SNAPSHOT")
     ...
 }
 ```
@@ -130,7 +130,7 @@ EventBuilder eventBuilder = new EventBuilder()
 sentryClient?.sendEvent(eventBuilder.build())
 ```
 
-# Latest releases
+# Historical releases ("org.grails.plugins:sentry")
 
 * 2018-07-16 **V11.7.25** : upgrade Sentry java lib to 1.7.25 + stack trace sanitizer
 * 2018-07-16 **V11.7.24** : upgrade Sentry java lib to 1.7.24 + Grails 4 upgrade
