@@ -17,10 +17,10 @@ package grails.plugin.sentry
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import io.sentry.event.EventBuilder
-import io.sentry.event.helper.EventBuilderHelper
-import io.sentry.event.interfaces.UserInterface
-import io.sentry.servlet.SentryServletRequestListener
+import io.sentry.EventProcessor
+import io.sentry.SentryEvent
+import io.sentry.protocol.User
+import org.grails.web.util.WebUtils
 
 import javax.servlet.http.HttpServletRequest
 
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 @CompileStatic
-class SpringSecurityUserEventBuilderHelper implements EventBuilderHelper {
+class SpringSecurityUserEventProcessor implements EventProcessor {
 
     private static final List<String> IP_HEADERS = ['X-Real-IP',
                                                     'Client-IP',
@@ -39,16 +39,15 @@ class SpringSecurityUserEventBuilderHelper implements EventBuilderHelper {
 
     SentryConfig config
 
-    SpringSecurityUserEventBuilderHelper(SentryConfig config) {
+    SpringSecurityUserEventProcessor(SentryConfig config) {
         this.config = config
     }
 
     def springSecurityService
-    SentryServletRequestListener sentryServletRequestListener
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @Override
-    void helpBuildingEvent(EventBuilder eventBuilder) {
+    SentryEvent process(SentryEvent event, Object hint) {
         def isLoggedIn = springSecurityService?.isLoggedIn()
 
         if (isLoggedIn) {
@@ -77,18 +76,27 @@ class SpringSecurityUserEventBuilderHelper implements EventBuilderHelper {
 
                 def id = principal[idPropertyName].toString()
                 String username = principal[usernamePropertyName].toString()
-                String ipAddress = getIpAddress(sentryServletRequestListener?.getServletRequest())
+                String ipAddress = getIpAddress(request)
                 String email = emailPropertyName ? principal[emailPropertyName].toString() : null
                 Map<String, Object> extraData = [:]
                 data.each { Object key ->
                     extraData[key as String] = principal[key as String].toString()
                 }
 
-                UserInterface userInterface = new UserInterface(id, username, ipAddress, email, extraData)
-
-                eventBuilder.withSentryInterface(userInterface, true)
+                User user = new User(id: id, username: username, ipAddress: ipAddress, email: email, unknown: extraData)
+                event.setUser(user)
+                return event
             }
         }
+    }
+
+    private static HttpServletRequest getRequest() {
+        try {
+            WebUtils.retrieveGrailsWebRequest()?.request
+        } catch (e) {
+            null
+        }
+
     }
 
     private static String getIpAddress(HttpServletRequest request) {
