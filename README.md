@@ -166,11 +166,11 @@ If you configure `linkPrefix` you can also add `<sentry:traceLink />` to your gs
 
 ## Bugs
 
-To report any bug, please use the project [Issues](https://github.com/agorapulse/grails-raven/issues/new) section on GitHub.
+To report any bug, please use the project [Issues](https://github.com/pmedianetwork/grails-sentry/issues/new) section on GitHub.
 
 ## Contributing
 
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/agorapulse/grails-raven/compare/).
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/pmedianetwork/grails-sentry/compare/).
 
 ## License
 
