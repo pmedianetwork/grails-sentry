@@ -1,10 +1,6 @@
 Sentry Grails Plugin
 ====================
 
-[![Build Status](https://secure.travis-ci.org/agorapulse/grails-sentry.png?branch=master)](https://travis-ci.org/agorapulse/grails-sentry)
-[![Download](https://api.bintray.com/packages/agorapulse/plugins/sentry/images/download.svg)](https://bintray.com/agorapulse/plugins/sentry/_latestVersion)
-
-
 # Introduction
 
 Sentry plugin provides a Grails client for integrating apps with [Sentry](http://www.getsentry.com). 
