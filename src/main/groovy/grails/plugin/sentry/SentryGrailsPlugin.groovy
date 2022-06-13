@@ -62,13 +62,13 @@ class SentryGrailsPlugin extends Plugin {
 
     Closure doWithSpring() {
         { ->
+            // Register sentryPluginConfig bean
+            delegate.parentCtx.beanFactory.registerSingleton('sentryPluginConfig', pluginConfig)
+
             if (!pluginConfig?.active) {
                 log.info "Sentry disabled"
                 return
             }
-
-            // Register sentryPluginConfig bean
-            delegate.parentCtx.beanFactory.registerSingleton('sentryPluginConfig', pluginConfig)
 
             if (pluginConfig?.dsn) {
                 log.info 'Sentry config found, creating Sentry client and corresponding Logback appender'
