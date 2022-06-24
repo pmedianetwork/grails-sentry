@@ -18,7 +18,9 @@ package grails.plugin.sentry
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import io.sentry.EventProcessor
+import io.sentry.SentryBaseEvent
 import io.sentry.SentryEvent
+import io.sentry.protocol.SentryTransaction
 import io.sentry.protocol.User
 import org.grails.web.util.WebUtils
 
@@ -45,9 +47,18 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
 
     def springSecurityService
 
-    @CompileStatic(TypeCheckingMode.SKIP)
     @Override
     SentryEvent process(SentryEvent event, Object hint) {
+        process(event)
+    }
+
+    @Override
+    SentryTransaction process(SentryTransaction transaction, Object hint) {
+        process(transaction)
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    <E extends SentryBaseEvent> E process(E event) {
         def isLoggedIn = springSecurityService?.isLoggedIn()
 
         if (isLoggedIn) {
@@ -85,9 +96,9 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
 
                 User user = new User(id: id, username: username, ipAddress: ipAddress, email: email, unknown: extraData)
                 event.setUser(user)
-                return event
             }
         }
+        return event
     }
 
     private static HttpServletRequest getRequest() {
