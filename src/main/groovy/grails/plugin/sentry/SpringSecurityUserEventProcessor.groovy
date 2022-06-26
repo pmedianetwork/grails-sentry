@@ -65,30 +65,15 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
             def principal = springSecurityService.getPrincipal()
 
             if (principal != null && principal != 'anonymousUser') {
-                String idPropertyName = 'id'
-                String emailPropertyName = null
-                String usernamePropertyName = 'username'
-                List<String> data = null
+                String idPropertyName = config.springSecurityUserProperties?.id ?: 'id'
+                String emailPropertyName = config.springSecurityUserProperties?.email
+                String usernamePropertyName = config.springSecurityUserProperties?.username ?: 'username'
+                List<String> data = config.springSecurityUserProperties?.data ?: []
 
-                if (config?.springSecurityUserProperties) {
-                    if (config.springSecurityUserProperties.id) {
-                        idPropertyName = config.springSecurityUserProperties.id
-                    }
-                    if (config.springSecurityUserProperties.email) {
-                        emailPropertyName = config.springSecurityUserProperties.email
-                    }
-                    if (config.springSecurityUserProperties.username) {
-                        usernamePropertyName = config.springSecurityUserProperties.username
-                    }
-                    if (config.springSecurityUserProperties.data) {
-                        data = config.springSecurityUserProperties.data
-                    }
-                }
-
-                def id = principal[idPropertyName].toString()
-                String username = principal[usernamePropertyName].toString()
+                String id = principal[idPropertyName]
+                String username = principal[usernamePropertyName]
                 String ipAddress = getIpAddress(request)
-                String email = emailPropertyName ? principal[emailPropertyName].toString() : null
+                String email = emailPropertyName ? principal[emailPropertyName] : null
                 Map<String, String> extraData = [:]
                 data.each { String key ->
                     String value = principal[key] as String
