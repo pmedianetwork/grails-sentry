@@ -146,7 +146,7 @@ class SentryConfig {
         String id
         String email
         String username
-        List data
+        List<String> data = []
     }
 
 }

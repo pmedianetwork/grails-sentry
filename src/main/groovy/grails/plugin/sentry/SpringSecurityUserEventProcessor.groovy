@@ -68,7 +68,7 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
                 String idPropertyName = 'id'
                 String emailPropertyName = null
                 String usernamePropertyName = 'username'
-                List data = null
+                List<String> data = null
 
                 if (config?.springSecurityUserProperties) {
                     if (config.springSecurityUserProperties.id) {
@@ -89,9 +89,13 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
                 String username = principal[usernamePropertyName].toString()
                 String ipAddress = getIpAddress(request)
                 String email = emailPropertyName ? principal[emailPropertyName].toString() : null
-                Map<String, Object> extraData = [:]
-                data.each { Object key ->
-                    extraData[key as String] = principal[key as String].toString()
+                Map<String, String> extraData = [:]
+                data.each { String key ->
+                    String value = principal[key] as String
+                    if (value != null) {
+                        event.setTag("user.${key}", value)
+                        extraData[key] = value
+                    }
                 }
 
                 User user = new User(id: id, username: username, ipAddress: ipAddress, email: email, unknown: extraData)
