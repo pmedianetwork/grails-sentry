@@ -3,6 +3,7 @@ package grails.plugin.sentry
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import io.sentry.EventProcessor
+import io.sentry.Hint
 import io.sentry.SentryEvent
 import org.codehaus.groovy.runtime.StackTraceUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +16,7 @@ class GrailsEventProcessor implements EventProcessor {
     SentryConfig sentryConfig
 
     @Override
-    SentryEvent process(SentryEvent event, Object hint) {
+    SentryEvent process(SentryEvent event, Hint hint) {
 
         // remove trash from message
         event.message.formatted -= ' Stacktrace follows:'

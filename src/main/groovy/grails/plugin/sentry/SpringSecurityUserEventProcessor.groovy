@@ -18,6 +18,7 @@ package grails.plugin.sentry
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import io.sentry.EventProcessor
+import io.sentry.Hint
 import io.sentry.SentryBaseEvent
 import io.sentry.SentryEvent
 import io.sentry.protocol.SentryTransaction
@@ -48,12 +49,12 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
     def springSecurityService
 
     @Override
-    SentryEvent process(SentryEvent event, Object hint) {
+    SentryEvent process(SentryEvent event, Hint hint) {
         process(event)
     }
 
     @Override
-    SentryTransaction process(SentryTransaction transaction, Object hint) {
+    SentryTransaction process(SentryTransaction transaction, Hint hint) {
         process(transaction)
     }
 
