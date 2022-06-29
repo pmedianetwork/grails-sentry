@@ -135,35 +135,10 @@ by adding `<sentry:traceMeta />` to `<head>` of your gsp view.
 If you configure `linkPrefix` you can also add `<sentry:traceLink />` to your gsp view which displays direct link to transaction in sentry application.
 
 # Latest releases
-* 2022-06-13 **1.0.1**: always register `sentryPluginConfig` bean
-* 2022-05-16 **1.0.0**: upgrade Sentry java lib to 5.7.0 + performance monitoring
 
-# Historical releases ("org.grails.plugins:sentry")
+See [releases](https://github.com/pmedianetwork/grails-sentry/releases).
 
-* 2018-07-16 **V11.7.25** : upgrade Sentry java lib to 1.7.25 + stack trace sanitizer
-* 2018-07-16 **V11.7.24** : upgrade Sentry java lib to 1.7.24 + Grails 4 upgrade
-* 2018-05-18 **V11.7.4** : upgrade Sentry java lib to 1.7.4 + bug fixes
-* 2018-02-09 **V11.6.5** : upgrade Sentry java lib to 1.6.5 + bug fixes
-* 2017-11-09 **V11.4.0.3** : fixes
-* 2017-08-03 **V11.4.0.2** : fixes
-* 2017-08-03 **V11.4.0** : upgrade Sentry java lib to 1.4.0 + bug fix, thanks to [donbeave](https://github.com/donbeave) PR #37
-* 2017-07-17 **V11.3.0** : upgrade Sentry java lib to 1.3.0 + bug fix, thanks to [donbeave](https://github.com/donbeave) PR #34
-* 2017-07-04 **V11.2.0** : upgrade Sentry java lib to 1.2.0 (which replaces the deprecated Raven java lib)
-* 2017-06-06 **V8.0.3** : upgrade Raven java lib to 8.0.3
-* 2017-02-01 **V7.8.1** : upgrade Raven java lib to 7.8.1
-* 2016-11-22 **V7.8.0.2** : event environment support 
-* 2016-10-29 **V7.8.0.1** : minor bug fix, thanks to [donbeave](https://github.com/donbeave) PR
-* 2016-10-19 **V7.8.0** : upgrade Raven java lib to 7.8.0
-* 2016-10-10 **V7.7.1** : upgrade Raven java lib to 7.7.1
-* 2016-09-27 **V7.7.0.1** : bug fix
-* 2016-09-26 **V7.7.0** : upgrade Raven java lib to 7.7.0, release support added to events
-* 2016-08-22 **V7.6.0** : upgrade Raven java lib to 7.6.0, Spring Security integration improvements, thanks to [donbeave](https://github.com/donbeave) PR
-* 2016-07-22 **V7.4.0** : upgrade Raven java lib to 7.4.0, better logging and support for Spring Security Core , thanks to [donbeave](https://github.com/donbeave) PR
-* 2016-06-22 **V7.3.0** : upgrade Raven java lib to 7.3.0
-* 2016-05-03 **V7.2.1** : upgrade Raven java lib to 7.2.1
-* 2016-04-12 **V7.1.0.1** : minor update
-* 2016-04-06 **V7.1.0** : upgrade Raven java lib to 7.1.0, thanks to [donbeave](https://github.com/donbeave) PR (WARNING: Raven package has been renamed from `net.kencochrane.raven` to `com.getsentry.raven`)
-* 2015-08-31 **V6.0.0** : initial release for Grails 3.x
+For historical releases ("org.grails.plugins:sentry") see [agorapulse/grails-sentry](https://github.com/agorapulse/grails-sentry#latest-releases).
 
 ## Bugs
 
