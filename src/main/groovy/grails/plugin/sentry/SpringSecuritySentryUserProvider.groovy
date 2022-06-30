@@ -17,21 +17,14 @@ package grails.plugin.sentry
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import io.sentry.EventProcessor
-import io.sentry.Hint
-import io.sentry.SentryBaseEvent
-import io.sentry.SentryEvent
-import io.sentry.protocol.SentryTransaction
 import io.sentry.protocol.User
+import io.sentry.spring.SentryUserProvider
 import org.grails.web.util.WebUtils
 
 import javax.servlet.http.HttpServletRequest
 
-/**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
- */
 @CompileStatic
-class SpringSecurityUserEventProcessor implements EventProcessor {
+class SpringSecuritySentryUserProvider implements SentryUserProvider {
 
     private static final List<String> IP_HEADERS = ['X-Real-IP',
                                                     'Client-IP',
@@ -40,26 +33,17 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
                                                     'WL-Proxy-Client-IP',
                                                     'rlnclientipaddr']
 
-    SentryConfig config
+    private SentryConfig config
 
-    SpringSecurityUserEventProcessor(SentryConfig config) {
+    SpringSecuritySentryUserProvider(SentryConfig config) {
         this.config = config
     }
 
     def springSecurityService
 
-    @Override
-    SentryEvent process(SentryEvent event, Hint hint) {
-        process(event)
-    }
-
-    @Override
-    SentryTransaction process(SentryTransaction transaction, Hint hint) {
-        process(transaction)
-    }
-
     @CompileStatic(TypeCheckingMode.SKIP)
-    <E extends SentryBaseEvent> E process(E event) {
+    @Override
+    User provideUser() {
         def isLoggedIn = springSecurityService?.isLoggedIn()
 
         if (isLoggedIn) {
@@ -79,16 +63,15 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
                 data.each { String key ->
                     String value = principal[key] as String
                     if (value != null) {
-                        event.setTag("user.${key}", value)
                         extraData[key] = value
                     }
                 }
 
                 User user = new User(id: id, username: username, ipAddress: ipAddress, email: email, unknown: extraData)
-                event.setUser(user)
+                return user
             }
         }
-        return event
+        return null
     }
 
     private static HttpServletRequest getRequest() {
@@ -97,7 +80,6 @@ class SpringSecurityUserEventProcessor implements EventProcessor {
         } catch (e) {
             null
         }
-
     }
 
     private static String getIpAddress(HttpServletRequest request) {

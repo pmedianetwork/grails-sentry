@@ -25,11 +25,15 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 import io.sentry.EventProcessor
+import io.sentry.HubAdapter
 import io.sentry.Sentry
 import io.sentry.SentryOptions
 import io.sentry.jdbc.SentryJdbcEventListener
 import io.sentry.logback.SentryAppender
 import io.sentry.servlet.SentryServletRequestListener
+import io.sentry.spring.ContextTagsEventProcessor
+import io.sentry.spring.HttpServletRequestSentryUserProvider
+import io.sentry.spring.SentryUserFilter
 import io.sentry.spring.tracing.SentryTracingFilter
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.servlet.FilterRegistrationBean
@@ -73,16 +77,26 @@ class SentryGrailsPlugin extends Plugin {
             if (pluginConfig?.dsn) {
                 log.info 'Sentry config found, creating Sentry client and corresponding Logback appender'
 
+                delegate.parentCtx.beanFactory.registerSingleton('sentryHub', HubAdapter.getInstance())
+
+                sentryOptions(SentryOptions)
                 sentryAppender(SentryAppender)
 
                 grailsEventProcessor(GrailsEventProcessor)
+                contextTagsEventProcessor(ContextTagsEventProcessor)
+
+                httpServletRequestSentryUserProvider(HttpServletRequestSentryUserProvider)
+                sentryUserFilter(SentryUserFilter)
+                sentryUserFilterRegistration(FilterRegistrationBean) {
+                    filter = sentryUserFilter
+                }
 
                 if (pluginConfig.logHttpRequest) {
                     sentryServletRequestListener(SentryServletRequestListener)
                 }
 
                 if (pluginConfig.springSecurityUser) {
-                    springSecurityUserEventProcessor(SpringSecurityUserEventProcessor, pluginConfig) {
+                    springSecuritySentryUserProvider(SpringSecuritySentryUserProvider){
                         springSecurityService = ref('springSecurityService')
                     }
                 }
@@ -91,7 +105,6 @@ class SentryGrailsPlugin extends Plugin {
                     sentryTracingFilter(SentryTracingFilter)
                     sentryTracingFilterRegistration(FilterRegistrationBean) {
                         filter = sentryTracingFilter
-                        urlPatterns = ['/*']
                         order = Ordered.HIGHEST_PRECEDENCE + 1
                     }
                     if (pluginConfig.traceJDBC) {
@@ -104,7 +117,6 @@ class SentryGrailsPlugin extends Plugin {
                     log.info 'Activating MDCInsertingServletFilter'
                     mdcInsertingServletFilter(FilterRegistrationBean) {
                         filter = bean(MDCInsertingServletFilter)
-                        urlPatterns = ['/*']
                     }
                 }
             } else {
@@ -135,8 +147,9 @@ class SentryGrailsPlugin extends Plugin {
             appender.start()
         }
 
-        SentryOptions options = new SentryOptions()
+        SentryOptions options = applicationContext.getBean(SentryOptions)
         options.enableExternalConfiguration = true
+        options.sendDefaultPii = true
         options.dsn = pluginConfig.dsn
         options.tracesSampleRate = pluginConfig.tracesSampleRate
         options.inAppIncludes.addAll pluginConfig.inAppIncludes
