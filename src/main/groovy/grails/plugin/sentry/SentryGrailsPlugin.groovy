@@ -35,6 +35,7 @@ import io.sentry.spring.ContextTagsEventProcessor
 import io.sentry.spring.HttpServletRequestSentryUserProvider
 import io.sentry.spring.SentryUserFilter
 import io.sentry.spring.tracing.SentryTracingFilter
+import io.sentry.spring.tracing.SpringMvcTransactionNameProvider
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.core.Ordered
@@ -101,8 +102,9 @@ class SentryGrailsPlugin extends Plugin {
                     }
                 }
 
-                if (pluginConfig.tracesSampleRate > 0) {
-                    sentryTracingFilter(SentryTracingFilter)
+                if (pluginConfig.tracesSampleRate > 0) { // Performance tracing enabled
+                    sentryTransactionNameProvider(SpringMvcTransactionNameProvider)
+                    sentryTracingFilter(SentryTracingFilter, ref('sentryHub'), ref('sentryTransactionNameProvider'))
                     sentryTracingFilterRegistration(FilterRegistrationBean) {
                         filter = sentryTracingFilter
                         order = Ordered.HIGHEST_PRECEDENCE + 1
