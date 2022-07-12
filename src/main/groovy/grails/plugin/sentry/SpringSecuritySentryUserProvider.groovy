@@ -49,7 +49,7 @@ class SpringSecuritySentryUserProvider implements SentryUserProvider {
         if (isLoggedIn) {
             def principal = springSecurityService.getPrincipal()
 
-            if (principal != null && principal != 'anonymousUser') {
+            if (principal && !(principal instanceof String)) {
                 String idPropertyName = config.springSecurityUserProperties?.id ?: 'id'
                 String emailPropertyName = config.springSecurityUserProperties?.email
                 String usernamePropertyName = config.springSecurityUserProperties?.username ?: 'username'

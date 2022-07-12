@@ -15,7 +15,7 @@ Declare the plugin dependency in the _build.gradle_ file, as shown here:
 ```groovy
 dependencies {
     ...
-    compile("com.github.pmedianetwork:grails-sentry:2.0.0")
+    compile("com.github.pmedianetwork:grails-sentry:2.0.1")
     ...
 }
 ```
