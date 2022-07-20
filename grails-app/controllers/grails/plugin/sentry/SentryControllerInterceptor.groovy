@@ -24,7 +24,9 @@ class SentryControllerInterceptor {
         if (request[SENTRY_CONTROLLER_SPAN] instanceof ISpan) {
             (request[SENTRY_CONTROLLER_SPAN] as ISpan).finish(SpanStatus.OK)
         }
-        request[SENTRY_VIEW_SPAN] = Sentry.span?.startChild('grails.view', view)
+        if (view) {
+            request[SENTRY_VIEW_SPAN] = Sentry.span?.startChild('grails.view', view)
+        }
         true
     }
 
