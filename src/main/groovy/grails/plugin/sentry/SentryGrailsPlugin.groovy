@@ -31,7 +31,6 @@ import io.sentry.SentryOptions
 import io.sentry.jdbc.SentryJdbcEventListener
 import io.sentry.logback.SentryAppender
 import io.sentry.servlet.SentryServletRequestListener
-import io.sentry.spring.ContextTagsEventProcessor
 import io.sentry.spring.HttpServletRequestSentryUserProvider
 import io.sentry.spring.SentryUserFilter
 import io.sentry.spring.tracing.SentryTracingFilter
