@@ -119,6 +119,7 @@ class SentryGrailsPlugin extends Plugin {
                     log.info 'Activating MDCInsertingServletFilter'
                     mdcInsertingServletFilter(FilterRegistrationBean) {
                         filter = bean(MDCInsertingServletFilter)
+                        order = Ordered.HIGHEST_PRECEDENCE
                     }
                 }
             } else {
