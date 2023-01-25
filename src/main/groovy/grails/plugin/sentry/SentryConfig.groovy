@@ -28,6 +28,10 @@ import groovy.transform.ToString
         tracesSampleRate: 0.5
         traceJDBC: true
         linkPrefix: https://sentry.example.com/organizations/company
+        excludedUris:
+          - /exact/uri
+          - /prefix/.*
+          - /(any|general)/regex[/]?
         springSecurityUserProperties:
             id: 'id'
             email: 'emailAddress'
@@ -95,6 +99,8 @@ class SentryConfig {
 
         linkPrefix = config.linkPrefix as String
 
+        excludedUris = parseList(config.excludedUris)
+
         if (config.springSecurityUserProperties && config.springSecurityUserProperties instanceof Map) {
             springSecurityUserProperties = new SpringSecurityUserProperties(
                     id: (config.springSecurityUserProperties as Map).id as String ?: null,
@@ -126,6 +132,7 @@ class SentryConfig {
     double tracesSampleRate = 0.0
     boolean traceJDBC = false
     String linkPrefix
+    List<String> excludedUris = []
 
     // TODO
     // priorities

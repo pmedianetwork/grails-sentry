@@ -73,6 +73,10 @@ grails:
             tracesSampleRate: 0.5
             traceJDBC: true
             linkPrefix: https://sentry.example.com/organizations/company
+            excludedUris:
+              - /exact/uri
+              - /prefix/.*
+              - /(any|general)/regex[/]?
             springSecurityUser: true
             springSecurityUserProperties:
                 id: 'id'
@@ -81,6 +85,8 @@ grails:
                 data: # Additional properties to be retrieved from user details object and passed as extra properties to Sentry user interface.
                     - 'authorities'
 ```
+
+Transactions with uri matching any of configured `excludedUris` will be ignored. It depends on request URI in MDC so `disableMDCInsertingServletFilter` must be false (default) for this feature to work.
 
 Check [Sentry-java](https://github.com/getsentry/sentry-java) documentation to configure connection, protocol and async options in your DSN. If you are sending extra tags from the plugin for the exceptions, make sure to enable the corresponding tag on sentry tag settings for the particular project to see the tag as a filter on the exception stream on sentry.
 

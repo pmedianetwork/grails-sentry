@@ -1,11 +1,14 @@
 package grails.plugin.sentry
 
+import ch.qos.logback.classic.ClassicConstants
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import io.sentry.EventProcessor
 import io.sentry.Hint
 import io.sentry.SentryEvent
+import io.sentry.protocol.SentryTransaction
 import org.codehaus.groovy.runtime.StackTraceUtils
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 
 @Slf4j
@@ -47,6 +50,20 @@ class GrailsEventProcessor implements EventProcessor {
         log.debug("Sentry event processed by GrailsEventProcessor:\n" + event.properties)
 
         return event
+
+    }
+
+    @Override
+    SentryTransaction process(SentryTransaction transaction, Hint hint) {
+
+        // Excluding transaction according to `excludedUris` configuration
+        String uri = MDC.get(ClassicConstants.REQUEST_REQUEST_URI)
+        if (uri && sentryConfig.excludedUris.any { uri ==~ it }) {
+            log.debug "Drop sentry transaction due to excluded URI: ${uri}"
+            return null
+        }
+
+        return transaction
 
     }
 
