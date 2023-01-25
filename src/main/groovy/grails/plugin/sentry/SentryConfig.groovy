@@ -57,14 +57,7 @@ class SentryConfig {
             active = false
         }
 
-        if (config.loggers) {
-            if (config.loggers instanceof List) {
-                loggers = (config.loggers as List).collect { it.toString() }
-            }
-            if (config.loggers instanceof String) {
-                loggers = (config.loggers as String).split(",").collect { it.toString() }
-            }
-        }
+        loggers = parseList(config.loggers)
 
         environment = config.environment ?: environment
         serverName = config.serverName ?: serverName
@@ -90,14 +83,7 @@ class SentryConfig {
             sanitizeStackTrace = true
         }
 
-        if (config.inAppIncludes) {
-            if (config.inAppIncludes instanceof List) {
-                inAppIncludes = config.inAppIncludes as List
-            }
-            if (config.inAppIncludes instanceof String) {
-                inAppIncludes = (config.inAppIncludes as String).split(",") as List
-            }
-        }
+        inAppIncludes = parseList(config.inAppIncludes)
 
         if (config.tracesSampleRate?.toString()?.isDouble()) {
             tracesSampleRate = config.tracesSampleRate as Double
@@ -117,6 +103,12 @@ class SentryConfig {
                     data: (config.springSecurityUserProperties as Map).data as List ?: null
             )
         }
+    }
+
+    private List<String> parseList(list) {
+        if (list instanceof List) return (list as List)*.toString()
+        if (list instanceof String) return (list as String).split(",") as List
+        []
     }
 
     boolean active = false
